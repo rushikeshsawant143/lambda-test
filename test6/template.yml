@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Resources:
+  test6:
+    Type: AWS::Lambda::Function
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      FunctionName: test6
+      Runtime: python3.12
+      Handler: lambda_function.lambda_handler
+      Role: arn:aws:iam::398069592832:role/service-role/test-role-spgvkicv
+      Timeout: 3
+      MemorySize: 128
+      Architectures:
+        - x86_64
+      Code:
+        S3Bucket: rushi2424
+        S3Key: test6.zip
+        S3ObjectVersion: JDQxihc1l1KxTuctfHnarBi2kfL9vSCx
