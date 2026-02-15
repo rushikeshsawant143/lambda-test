@@ -37,7 +37,7 @@ jobs:
         run: |
           pwd
           ls
-          cd ../../
+          cd ../
           pwd
           ls
           aws s3 cp test.zip s3://rushi2424/test.zip
