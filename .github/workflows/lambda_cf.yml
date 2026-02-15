@@ -60,8 +60,9 @@ jobs:
       - name: Create Stack (if not exists)
         if: steps.stackcheck.outputs.exists == 'false'
         run: |
+          echo ${{ steps.upload.outputs.version }}
           aws cloudformation create-stack \
-            --stack-name test-stack \
+            --stack-name test \
             --template-body file://template.yml \
             --parameters ParameterKey=LambdaCodeVersion,ParameterValue=${{ steps.upload.outputs.version }} \
             --capabilities CAPABILITY_NAMED_IAM
