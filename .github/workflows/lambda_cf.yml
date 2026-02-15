@@ -24,9 +24,7 @@ jobs:
 
       - name: Zip Lambda
         run: |
-          pwd
-          ls
-          cd lambda-test/test
+          cd test
           zip -r test.zip .
           mv test.zip ../../
 
