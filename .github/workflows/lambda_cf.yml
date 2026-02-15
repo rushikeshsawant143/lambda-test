@@ -48,27 +48,45 @@ jobs:
             --output text)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Check if Stack Exists
-        id: stackcheck
+      - name: create empty stack
+        # id: stackcheck
         run: |
-          if aws cloudformation describe-stacks --stack-name test 2>/dev/null; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create Stack (if not exists)
-        if: steps.stackcheck.outputs.exists == 'false'
-        run: |
-          echo ${{ steps.upload.outputs.version }}
           aws cloudformation create-stack \
             --stack-name test \
+            --template-body file://empty.yml
+
+      - name: create resource stack
+        # id: stackcheck
+        run: |
+          aws cloudformation create-change-set \
+            --stack-name test \
+            --change-set-name import-test \
+            --change-set-type IMPORT \
             --template-body file://template.yml \
             --parameters ParameterKey=LambdaCodeVersion,ParameterValue=${{ steps.upload.outputs.version }} \
             --capabilities CAPABILITY_NAMED_IAM
 
-          aws cloudformation wait stack-create-complete \
-            --stack-name test-stack
+      # - name: Check if Stack Exists
+      #   id: stackcheck
+      #   run: |
+      #     if aws cloudformation describe-stacks --stack-name test 2>/dev/null; then
+      #       echo "exists=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "exists=false" >> $GITHUB_OUTPUT
+      #     fi
+
+      # - name: Create Stack (if not exists)
+      #   if: steps.stackcheck.outputs.exists == 'false'
+      #   run: |
+      #     echo ${{ steps.upload.outputs.version }}
+      #     aws cloudformation create-stack \
+      #       --stack-name test \
+      #       --template-body file://template.yml \
+      #       --parameters ParameterKey=LambdaCodeVersion,ParameterValue=${{ steps.upload.outputs.version }} \
+      #       --capabilities CAPABILITY_NAMED_IAM
+
+      #     aws cloudformation wait stack-create-complete \
+      #       --stack-name test-stack
 
       # - name: Update Stack (if exists)
       #   if: steps.stackcheck.outputs.exists == 'true'
