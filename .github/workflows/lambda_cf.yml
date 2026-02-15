@@ -30,6 +30,7 @@ jobs:
           ls ../../
           cd ../../
           ls
+          pwd
 
       - name: Upload to S3
         id: upload
@@ -37,6 +38,8 @@ jobs:
           pwd
           ls
           cd ../../
+          pwd
+          ls
           aws s3 cp test.zip s3://rushi2424/test.zip
           VERSION=$(aws s3api head-object \
             --bucket rushi2424 \
