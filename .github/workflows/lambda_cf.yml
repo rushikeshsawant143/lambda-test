@@ -51,7 +51,7 @@ jobs:
       - name: Check if Stack Exists
         id: stackcheck
         run: |
-          if aws cloudformation describe-stacks --stack-name test-stack 2>/dev/null; then
+          if aws cloudformation describe-stacks --stack-name test 2>/dev/null; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -69,14 +69,14 @@ jobs:
           aws cloudformation wait stack-create-complete \
             --stack-name test-stack
 
-      - name: Update Stack (if exists)
-        if: steps.stackcheck.outputs.exists == 'true'
-        run: |
-          aws cloudformation update-stack \
-            --stack-name test-stack \
-            --template-body file://template.yml \
-            --parameters ParameterKey=LambdaCodeVersion,ParameterValue=${{ steps.upload.outputs.version }} \
-            --capabilities CAPABILITY_NAMED_IAM || echo "No updates to perform"
+      # - name: Update Stack (if exists)
+      #   if: steps.stackcheck.outputs.exists == 'true'
+      #   run: |
+      #     aws cloudformation update-stack \
+      #       --stack-name test-stack \
+      #       --template-body file://template.yml \
+      #       --parameters ParameterKey=LambdaCodeVersion,ParameterValue=${{ steps.upload.outputs.version }} \
+      #       --capabilities CAPABILITY_NAMED_IAM || echo "No updates to perform"
 
-          aws cloudformation wait stack-update-complete \
-            --stack-name test-stack
+      #     aws cloudformation wait stack-update-complete \
+      #       --stack-name test-stack
