@@ -28,11 +28,12 @@ jobs:
           zip -r test.zip .
           mv test.zip ../../
           ls ../../
+          cd ../../
+          ls
 
       - name: Upload to S3
         id: upload
         run: |
-          cd ../..
           aws s3 cp test.zip s3://rushi2424/test.zip
           VERSION=$(aws s3api head-object \
             --bucket rushi2424 \
