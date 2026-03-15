@@ -69,7 +69,7 @@ jobs:
         # if: steps.stackcheck.outputs.exists == 'true'
         run: |
           aws cloudformation create-change-set --stack-name test --change-set-name import-test --change-set-type UPDATE --template-body file://template.yml --parameters ParameterKey=LambdaCodeVersion,ParameterValue=${{ steps.upload.outputs.version }} --capabilities CAPABILITY_NAMED_IAM
-          # aws cloudformation wait change-set-create-complete --stack-name test --change-set-name import-test
+          aws cloudformation wait change-set-create-complete --stack-name test --change-set-name import-test
           # aws cloudformation execute-change-set --stack-name test --change-set-name import-test
 
       # - name: Create Stack (if not exists)
