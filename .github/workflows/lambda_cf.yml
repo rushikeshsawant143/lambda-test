@@ -52,7 +52,7 @@ jobs:
         # id: stackcheck
         run: |
           aws cloudformation create-stack \
-            --stack-name test \
+            --stack-name empty \
             --template-body file://empty.yml
 
       - name: create resource stack
