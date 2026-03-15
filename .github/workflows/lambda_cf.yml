@@ -58,6 +58,7 @@ jobs:
       - name: create resource stack
         # id: stackcheck
         run: |
+          pwd
           aws cloudformation create-change-set \
             --stack-name test \
             --change-set-name import-test \
