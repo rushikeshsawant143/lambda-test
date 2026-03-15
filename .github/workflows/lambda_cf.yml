@@ -56,24 +56,21 @@ jobs:
       #       --stack-name empty \
       #       --template-body file://empty.yml
 
+      - name: Check if Stack Exists
+        id: stackcheck
+        run: |
+          if aws cloudformation describe-stacks --stack-name test 2>/dev/null; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: create resource stack
+        if: steps.stackcheck.outputs.exists == 'true'
         run: |
-          pwd
-          ls
           aws cloudformation create-change-set --stack-name test --change-set-name import-test --change-set-type UPDATE --template-body file://template.yml --parameters ParameterKey=LambdaCodeVersion,ParameterValue=${{ steps.upload.outputs.version }} --capabilities CAPABILITY_NAMED_IAM
-
-      - name: wait for change set to create
-        run: |
           aws cloudformation wait change-set-create-complete --stack-name test --change-set-name import-test
-
-      # - name: Check if Stack Exists
-      #   id: stackcheck
-      #   run: |
-      #     if aws cloudformation describe-stacks --stack-name test 2>/dev/null; then
-      #       echo "exists=true" >> $GITHUB_OUTPUT
-      #     else
-      #       echo "exists=false" >> $GITHUB_OUTPUT
-      #     fi
+          aws cloudformation execute-change-set --stack-name test --change-set-name import-test
 
       # - name: Create Stack (if not exists)
       #   if: steps.stackcheck.outputs.exists == 'false'
