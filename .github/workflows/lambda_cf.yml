@@ -41,7 +41,11 @@ jobs:
           pwd
           ls
           aws s3 cp test.zip s3://rushi2424/test.zip
-          VERSION=$(aws s3api list-object-versions --bucket rushi2424 --prefix test.zip --query "Versions[?IsLatest==`true`].VersionId" --output text)
+          VERSION=$(aws s3api list-object-versions \
+            --bucket rushi2424 \
+            --prefix test.zip \
+            --query "Versions[?IsLatest==\`true\`].VersionId" \
+            --output text)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: create empty stack
