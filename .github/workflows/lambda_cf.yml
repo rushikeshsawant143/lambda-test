@@ -48,12 +48,12 @@ jobs:
             --output text)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: create empty stack
-        # id: stackcheck
-        run: |
-          aws cloudformation create-stack \
-            --stack-name empty \
-            --template-body file://empty.yml
+      # - name: create empty stack
+      #   # id: stackcheck
+      #   run: |
+      #     aws cloudformation create-stack \
+      #       --stack-name empty \
+      #       --template-body file://empty.yml
 
       - name: create resource stack
         # id: stackcheck
