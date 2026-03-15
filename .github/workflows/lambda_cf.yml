@@ -46,6 +46,7 @@ jobs:
             --prefix test.zip \
             --query "Versions[?IsLatest==\`true\`].VersionId" \
             --output text)
+          echo "version=$VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       # - name: create empty stack
@@ -59,6 +60,7 @@ jobs:
         # id: stackcheck
         run: |
           pwd
+          ls
           aws cloudformation create-change-set \
             --stack-name test \
             --change-set-name import-test \
